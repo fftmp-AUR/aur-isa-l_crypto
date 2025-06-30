@@ -1,30 +1,34 @@
-# Maintainer: Roy Oursler <roy.j.oursler@intel.com>
+# Maintainer: fft
+# Contributor: Roy Oursler <roy.j.oursler@intel.com>
+
 pkgname=isa-l_crypto
-pkgver=2.24.0
+pkgver=2.25.0
 pkgrel=1
 pkgdesc="A collection of optimized low-level functions targeting storage applications"
 arch=(x86_64)
-url="https://github.com/01org/$pkgname"
-license=('BSD')
+url="https://github.com/intel/${pkgname}"
+license=('BSD-3-Clause')
 makedepends=('nasm')
-source=("$url/archive/v$pkgver.tar.gz")
-sha1sums=('582dc8844aa18a5ac251955cffd979da999b1616')
+source=("${url}/archive/v${pkgver}.tar.gz")
+b2sums=('18328b404a2686718fc8cf9bc596816e4521ec85440e8aad2bb40d32eabc606807617fc08c2790c4bb0a0b84648fa9820a4a6c19ac6a3cbbbc2cd96bddfd1eb9')
 
 build() {
-    cd "${srcdir}/$pkgname-$pkgver"
+    cd "${srcdir}/${pkgname}-${pkgver}"
     ./autogen.sh
-    ./configure --prefix="${pkgdir}/usr"
+    #./configure --prefix="${pkgdir}/usr"
+    ./configure
     make
 }
 
 check() {
-    cd "${srcdir}/$pkgname-$pkgver"
+    cd "${srcdir}/${pkgname}-${pkgver}"
     make check
+    make tests
 }
 
 package() {
-    cd "${srcdir}/$pkgname-$pkgver"
-    make install
-    mkdir -p "$pkgdir/usr/share/licenses/$pkgname"
-    install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+    cd "${srcdir}/${pkgname}-${pkgver}"
+    make install DESTDIR="${pkgdir}"
+   # mkdir -p "$pkgdir/usr/share/licenses/${pkgname}"
+    install -Dm644 -t "${pkgdir}/usr/share/licenses/${pkgname}/" LICENSE
 }
