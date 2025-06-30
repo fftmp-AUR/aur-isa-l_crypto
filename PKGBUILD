@@ -15,7 +15,6 @@ b2sums=('18328b404a2686718fc8cf9bc596816e4521ec85440e8aad2bb40d32eabc606807617fc
 build() {
     cd "${srcdir}/${pkgname}-${pkgver}"
     ./autogen.sh
-    #./configure --prefix="${pkgdir}/usr"
     ./configure
     make
 }
@@ -29,6 +28,5 @@ check() {
 package() {
     cd "${srcdir}/${pkgname}-${pkgver}"
     make install DESTDIR="${pkgdir}"
-   # mkdir -p "$pkgdir/usr/share/licenses/${pkgname}"
     install -Dm644 -t "${pkgdir}/usr/share/licenses/${pkgname}/" LICENSE
 }
